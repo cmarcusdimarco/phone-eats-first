@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Alert, StyleSheet, View } from "react-native";
+import { Alert, View, Text } from "react-native";
 import { supabase } from "~/lib/supabase";
-import { Button, Input } from "@rneui/themed";
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
 
 export default function Auth() {
   const [email, setEmail] = useState("");
@@ -36,57 +37,58 @@ export default function Auth() {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Input
-          label="Email"
-          leftIcon={{ type: "font-awesome", name: "envelope" }}
-          onChangeText={(text) => setEmail(text)}
-          value={email}
-          placeholder="email@address.com"
-          autoCapitalize={"none"}
-        />
-      </View>
-      <View style={styles.verticallySpaced}>
-        <Input
-          label="Password"
-          leftIcon={{ type: "font-awesome", name: "lock" }}
-          onChangeText={(text) => setPassword(text)}
-          value={password}
-          secureTextEntry={true}
-          placeholder="Password"
-          autoCapitalize={"none"}
-        />
-      </View>
-      <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Button
-          title="Sign in"
-          disabled={loading}
-          onPress={() => signInWithEmail()}
-        />
-      </View>
-      <View style={styles.verticallySpaced}>
-        <Button
-          title="Sign up"
-          disabled={loading}
-          onPress={() => signUpWithEmail()}
-        />
+    <View className="mt-10 p-3">
+      <Text className="text-h2 text-secondary mb-6 text-center">
+        Welcome Back
+      </Text>
+
+      <View className="flex gap-4">
+        <View>
+          <Text className="text-small text-foreground mb-1">Email</Text>
+          <Input
+            value={email}
+            onChangeText={setEmail}
+            placeholder="email@address.com"
+            autoCapitalize="none"
+            className="bg-background-alt"
+          />
+        </View>
+
+        <View>
+          <Text className="text-small text-foreground mb-1">Password</Text>
+          <Input
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+            placeholder="Password"
+            autoCapitalize="none"
+            className="bg-background-alt"
+          />
+        </View>
+
+        <View className="flex gap-4 mt-5">
+          <Button
+            disabled={loading}
+            onPress={signInWithEmail}
+            className="bg-primary"
+          >
+            <Text className="text-body text-primary-foreground font-semibold">
+              Sign in
+            </Text>
+          </Button>
+
+          <Button
+            disabled={loading}
+            onPress={signUpWithEmail}
+            variant="outline"
+            className="border-secondary"
+          >
+            <Text className="text-body text-secondary font-semibold">
+              Sign up
+            </Text>
+          </Button>
+        </View>
       </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 40,
-    padding: 12,
-  },
-  verticallySpaced: {
-    paddingTop: 4,
-    paddingBottom: 4,
-    alignSelf: "stretch",
-  },
-  mt20: {
-    marginTop: 20,
-  },
-});

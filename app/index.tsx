@@ -5,6 +5,7 @@ import Auth from "~/components/Auth";
 import { View, Text } from "react-native";
 import { Session } from "@supabase/supabase-js";
 import * as SplashScreen from "expo-splash-screen";
+import { useRouter } from "expo-router";
 
 // Keep the splash screen visible while we fetch the resources
 SplashScreen.preventAutoHideAsync();
@@ -18,23 +19,30 @@ SplashScreen.setOptions({
 export default function App() {
   const [session, setSession] = useState<Session | null>(null);
   const [appIsReady, setAppIsReady] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
+      if (session) {
+        router.replace("/dashboard");
+      }
     });
 
     supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
+      if (session) {
+        router.replace("/dashboard");
+      }
     });
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     async function prepare() {
       try {
         // Artificially delay for two seconds to simulate a slow loading
         // experience. Remove this if you copy and paste the code!
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        // await new Promise((resolve) => setTimeout(resolve, 2000));
       } catch (e) {
         console.warn(e);
       } finally {
