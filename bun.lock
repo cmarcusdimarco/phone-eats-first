@@ -17,6 +17,7 @@
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.0",
         "expo": "^52.0.25",
+        "expo-camera": "^16.0.18",
         "expo-dev-client": "~5.0.12",
         "expo-linking": "~7.0.4",
         "expo-navigation-bar": "~4.0.7",
@@ -917,6 +918,8 @@
     "expo": ["expo@52.0.37", "", { "dependencies": { "@babel/runtime": "^7.20.0", "@expo/cli": "0.22.18", "@expo/config": "~10.0.10", "@expo/config-plugins": "~9.0.15", "@expo/fingerprint": "0.11.11", "@expo/metro-config": "0.19.11", "@expo/vector-icons": "^14.0.0", "babel-preset-expo": "~12.0.9", "expo-asset": "~11.0.4", "expo-constants": "~17.0.7", "expo-file-system": "~18.0.11", "expo-font": "~13.0.4", "expo-keep-awake": "~14.0.3", "expo-modules-autolinking": "2.0.8", "expo-modules-core": "2.2.2", "fbemitter": "^3.0.0", "web-streams-polyfill": "^3.3.2", "whatwg-url-without-unicode": "8.0.0-3" }, "peerDependencies": { "@expo/dom-webview": "*", "@expo/metro-runtime": "*", "react": "*", "react-native": "*", "react-native-webview": "*" }, "optionalPeers": ["@expo/dom-webview", "@expo/metro-runtime", "react-native-webview"], "bin": { "expo": "bin/cli" } }, "sha512-fo37ClqjNLOVInerm7BU27H8lfPfeTC7Pmu72roPzq46DnJfs+KzTxTzE34GcJ0b6hMUx9FRSSGyTQqxzo2TVQ=="],
 
     "expo-asset": ["expo-asset@11.0.4", "", { "dependencies": { "@expo/image-utils": "^0.6.5", "expo-constants": "~17.0.7", "invariant": "^2.2.4", "md5-file": "^3.2.3" }, "peerDependencies": { "expo": "*", "react": "*", "react-native": "*" } }, "sha512-CdIywU0HrR3wsW5c3n0cT3jW9hccZdnqGsRqY+EY/RWzJbDXtDfAQVEiFHO3mDK7oveUwrP2jK/6ZRNek41/sg=="],
+
+    "expo-camera": ["expo-camera@16.0.18", "", { "dependencies": { "invariant": "^2.2.4" }, "peerDependencies": { "expo": "*", "react": "*", "react-native": "*", "react-native-web": "*" }, "optionalPeers": ["react-native-web"] }, "sha512-NP5u2yyc+wZc9GdUXH+jcEytyXZwBnHxItMwXoZQQxi4wgltwvs4XfSWjBtRZe1LngnhpBfPyPJV0aShjWlLDg=="],
 
     "expo-constants": ["expo-constants@17.0.7", "", { "dependencies": { "@expo/config": "~10.0.10", "@expo/env": "~0.4.2" }, "peerDependencies": { "expo": "*", "react-native": "*" } }, "sha512-sp5NUiV17I3JblVPIBDgoxgt7JIZS30vcyydCYHxsEoo+aKaeRYXxGYilCvb9lgI6BBwSL24sQ6ZjWsCWoF1VA=="],
 
@@ -2224,11 +2227,7 @@
 
     "default-gateway/execa/npm-run-path/path-key": ["path-key@2.0.1", "", {}, "sha512-fEHGKCSmUSDPv4uoj8AlD+joPlq3peND+HRYyxFz4KPw4z926S/b8rIuFs2FYJg3BwsxJf6A9/3eIdLaYC+9Dw=="],
 
-    "log-symbols/chalk/ansi-styles/color-convert": ["color-convert@1.9.3", "", { "dependencies": { "color-name": "1.1.3" } }, "sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg=="],
-
     "log-symbols/chalk/supports-color/has-flag": ["has-flag@3.0.0", "", {}, "sha512-sKJf1+ceQBr4SMkvQnBDNDtf4TXpVhVGateu0t918bl30FnbE2m4vNLX+VWe/dpjlb+HugGYzW7uQXH98HPEYw=="],
-
-    "ora/chalk/ansi-styles/color-convert": ["color-convert@1.9.3", "", { "dependencies": { "color-name": "1.1.3" } }, "sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg=="],
 
     "ora/chalk/supports-color/has-flag": ["has-flag@3.0.0", "", {}, "sha512-sKJf1+ceQBr4SMkvQnBDNDtf4TXpVhVGateu0t918bl30FnbE2m4vNLX+VWe/dpjlb+HugGYzW7uQXH98HPEYw=="],
 
@@ -2243,10 +2242,6 @@
     "@istanbuljs/load-nyc-config/find-up/locate-path/p-locate/p-limit": ["p-limit@2.3.0", "", { "dependencies": { "p-try": "^2.0.0" } }, "sha512-//88mFWSJx8lxCzwdAABTJL2MyWB12+eIY7MDL2SqLmAkeKU9qxRvWuSyTjm3FUmpBEMuFfckAIqEaVGUDxb6w=="],
 
     "default-gateway/execa/cross-spawn/shebang-command/shebang-regex": ["shebang-regex@1.0.0", "", {}, "sha512-wpoSFAxys6b2a2wHZ1XpDSgD7N9iVjg29Ph9uV/uaP9Ex/KXlkTZTeddxDPSYQpgvzKLGJke2UU0AzoGCjNIvQ=="],
-
-    "log-symbols/chalk/ansi-styles/color-convert/color-name": ["color-name@1.1.3", "", {}, "sha512-72fSenhMw2HZMTVHeCA9KCmpEIbzWiQsjN+BHcBbS9vr1mtt+vJjPdksIBNUmKAW8TFUDPJK5SUU3QhE9NEXDw=="],
-
-    "ora/chalk/ansi-styles/color-convert/color-name": ["color-name@1.1.3", "", {}, "sha512-72fSenhMw2HZMTVHeCA9KCmpEIbzWiQsjN+BHcBbS9vr1mtt+vJjPdksIBNUmKAW8TFUDPJK5SUU3QhE9NEXDw=="],
 
     "pkg-dir/find-up/locate-path/p-locate/p-limit": ["p-limit@2.3.0", "", { "dependencies": { "p-try": "^2.0.0" } }, "sha512-//88mFWSJx8lxCzwdAABTJL2MyWB12+eIY7MDL2SqLmAkeKU9qxRvWuSyTjm3FUmpBEMuFfckAIqEaVGUDxb6w=="],
   }
