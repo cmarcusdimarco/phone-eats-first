@@ -7,7 +7,11 @@ export default function AddMealScreen() {
   const [mealDescription, setMealDescription] = useState("");
 
   if (showCamera) {
-    return <Camera onCapture={() => setShowCamera(false)} />;
+    return (
+      <View className="flex-1">
+        <Camera onCapture={() => setShowCamera(false)} />
+      </View>
+    );
   }
 
   return (
