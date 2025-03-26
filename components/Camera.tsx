@@ -33,12 +33,19 @@ export default function Camera({ onCapture }: { onCapture: () => void }) {
     setFacing(current => (current === 'back' ? 'front' : 'back'));
   }
 
+  function captureImage() {
+    console.log('Capturing image');
+  }
+
     return (
       <View style={styles.container}>
         <CameraView style={styles.camera} facing={facing}>
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
               <Text style={styles.text}>Flip Camera</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={captureImage}>
+              <Text style={styles.text}>Capture Image</Text>
             </TouchableOpacity>
           </View>
         </CameraView>
