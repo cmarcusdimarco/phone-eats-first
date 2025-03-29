@@ -39,7 +39,8 @@
           "image": "./assets/images/favicon.png",
           "backgroundColor": "#232323"
         }
-      ]
+      ],
+      "react-native-compressor"
     ],
     "experiments": {
       "typedRoutes": true

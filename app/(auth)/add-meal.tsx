@@ -2,6 +2,7 @@ import { View, Text, TextInput, Image } from "react-native";
 import { useState } from "react";
 import Camera from "~/components/Camera";
 import { Button } from "~/components/ui/button";
+import { uploadFile } from "~/services/storage";
 
 export default function AddMealScreen() {
   const [showCamera, setShowCamera] = useState(false);
@@ -46,7 +47,9 @@ export default function AddMealScreen() {
             multiline
           />
 
-          <Button><Text>Do the AI thing</Text></Button>
+          <Button onPress={() => {
+            uploadFile(photoUri);
+          }}><Text>Do the AI thing</Text></Button>
         </>
       )}
     </View>
