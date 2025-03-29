@@ -1,21 +1,21 @@
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Button } from '~/components/ui/button';
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 
-export default function Camera({ onCapture }: { onCapture: () => void }) {
-  console.log('Camera component rendering');
+export default function Camera({ onCapture }: { onCapture: (uri: string | null) => void }) {
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
+  const [uri, setUri] = useState<string | null>(null);
+
+  const cameraRef = useRef<CameraView>(null);
 
   if (!permission) {
-    console.log('Camera permissions loading...');
     // Camera permissions are still loading.
     return <View />;
   }
 
   if (!permission.granted) {
-    console.log('Camera permissions not granted');
     // Camera permissions are not granted yet.
     return (
       <View className="flex-1 justify-center">
@@ -33,18 +33,25 @@ export default function Camera({ onCapture }: { onCapture: () => void }) {
     setFacing(current => (current === 'back' ? 'front' : 'back'));
   }
 
-  function captureImage() {
-    console.log('Capturing image');
+  async function handleCapture() {
+    const photo = await cameraRef.current?.takePictureAsync();
+    if (photo?.uri) {
+      setUri(photo.uri);
+      onCapture(photo.uri);
+    } else {
+      setUri(null);
+      onCapture(null);
+    }
   }
 
     return (
       <View style={styles.container}>
-        <CameraView style={styles.camera} facing={facing}>
+        <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
               <Text style={styles.text}>Flip Camera</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={captureImage}>
+            <TouchableOpacity style={styles.button} onPress={handleCapture}>
               <Text style={styles.text}>Capture Image</Text>
             </TouchableOpacity>
           </View>
