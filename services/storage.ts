@@ -1,13 +1,23 @@
 import { supabase } from '~/lib/supabase';
 import { Image } from 'react-native-compressor';
+import * as FileSystem from 'expo-file-system';
+import { decode } from 'base64-arraybuffer';
 
 // Upload file using standard upload
-export async function uploadFile(uri: string) {
+export async function uploadFileAsync(uri: string) {
     try {
+        const fileExtension = getFileExtension(uri);
+        const compressedUri = await compressImage(uri);
+        const filePath = await generateFilePathWithUserId(fileExtension);
+
+        const arrayBuffer = await uriToArrayBuffer(compressedUri);
+
         const { data, error } = await supabase.storage.from('meals')
-            .upload(await generateFilePathWithUserId(getFileExtension(uri)), await compressImage(uri));
+            .upload(filePath, arrayBuffer, {
+                contentType: `image/${fileExtension}`
+            });
         if (error) {
-            console.error('Error uploading image:', error);
+            throw error;
         }
 
         console.log('Uploaded image:', data);
@@ -41,4 +51,14 @@ export async function generateFilePathWithUserId(fileExtension: string = 'jpg'):
     }).replace(/[^\d]/g, '').replace(/(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/, '$3$2$1$4$5');
     const randomString = Math.random().toString(36).substring(2, 15);
     return `${userId}/${timestamp}-${randomString}.${fileExtension}`;
-  }
+}
+
+async function uriToArrayBuffer(uri: string): Promise<ArrayBuffer> {
+    const file = await FileSystem.readAsStringAsync(uri, {
+        encoding: FileSystem.EncodingType.Base64
+    });
+
+    return decode(file);
+}
+
+
