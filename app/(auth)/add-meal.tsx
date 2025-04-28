@@ -2,10 +2,11 @@ import { View, Text, TextInput, Image } from "react-native";
 import { useState } from "react";
 import Camera from "~/components/Camera";
 import { Button } from "~/components/ui/button";
-import { uploadFileAsync } from "~/services/storage";
+import { handleMealSubmission } from "~/services/mealsService";
 
 export default function AddMealScreen() {
   const [showCamera, setShowCamera] = useState(false);
+  const [mealName, setMealName] = useState("");
   const [mealDescription, setMealDescription] = useState("");
   const [photoUri, setPhotoUri] = useState<string | null>(null);
 
@@ -41,6 +42,13 @@ export default function AddMealScreen() {
         <>
           <TextInput
             className="border p-2 my-4 rounded"
+            placeholder="Name of the meal..."
+            value={mealName}
+            onChangeText={setMealName}
+          />
+
+          <TextInput
+            className="border p-2 my-4 rounded"
             placeholder="Describe your meal..."
             value={mealDescription}
             onChangeText={setMealDescription}
@@ -48,7 +56,7 @@ export default function AddMealScreen() {
           />
 
           <Button onPress={async () => {
-            await uploadFileAsync(photoUri);
+            await handleMealSubmission(photoUri, mealDescription);
           }}><Text>Do the AI thing</Text></Button>
         </>
       )}
