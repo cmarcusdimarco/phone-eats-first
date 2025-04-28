@@ -37,7 +37,9 @@ export async function handleMealSubmission(photoUri: string, name: string, descr
         const data = await response.json();
     
         console.log("Edge Function response received");
-        console.log(data);
+
+        const parsedData = JSON.parse(data.text);
+        console.log(parsedData);
     } catch (error) {
         console.error('Error invoking Edge Function:', error);
         throw error;
