@@ -1,7 +1,8 @@
-import { View, Text, TextInput, Image } from "react-native";
-import { useState } from "react";
+import React, { useState } from "react";
+import { View, Text, TextInput, Image, ActivityIndicator } from "react-native";
 import Camera from "~/components/Camera";
 import { Button } from "~/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "~/components/ui/dialog";
 import { handleMealSubmission } from "~/services/mealsService";
 
 export default function AddMealScreen() {
@@ -9,6 +10,9 @@ export default function AddMealScreen() {
   const [mealName, setMealName] = useState("");
   const [mealDescription, setMealDescription] = useState("");
   const [photoUri, setPhotoUri] = useState<string | null>(null);
+  const [mealResponse, setMealResponse] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
 
   if (showCamera) {
     return (
@@ -55,9 +59,36 @@ export default function AddMealScreen() {
             multiline
           />
 
-          <Button onPress={async () => {
-            await handleMealSubmission(photoUri, mealDescription);
-          }}><Text>Do the AI thing</Text></Button>
+          <Button 
+            onPress={async () => {
+              setIsLoading(true);
+              const response = await handleMealSubmission(photoUri, mealName, mealDescription);
+              setMealResponse(response);
+              setIsLoading(false);
+              setShowDialog(true);
+            }}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <View className="flex-row items-center">
+                <ActivityIndicator color="white" />
+                <Text className="ml-2">Processing...</Text>
+              </View>
+            ) : (
+              <Text>Do the AI thing</Text>
+            )}
+          </Button>
+
+          <Dialog open={showDialog} onOpenChange={setShowDialog}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>AI Analysis Results</DialogTitle>
+              </DialogHeader>
+              <DialogDescription>
+                <Text className="text-base">{JSON.stringify(mealResponse, null, 2)}</Text>
+              </DialogDescription>
+            </DialogContent>
+          </Dialog>
         </>
       )}
     </View>

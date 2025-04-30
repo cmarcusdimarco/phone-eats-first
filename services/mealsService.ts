@@ -13,6 +13,18 @@ const getSessionJWT = async () => {
   return null;
 };
 
+// To get the current user ID
+const getUserId = async () => {
+  const { data: { session } } = await supabase.auth.getSession();
+  
+  if (session) {
+    const userId = session.user.id;
+    return userId;
+  }
+  
+  return null;
+};
+
 export async function handleMealSubmission(photoUri: string, name: string, description: string) {
     const uploadResult = await uploadFileAsync(photoUri);
 
@@ -23,6 +35,12 @@ export async function handleMealSubmission(photoUri: string, name: string, descr
     console.log("File uploaded successfully");
     console.log(`id: ${uploadResult.id}, path: ${uploadResult.path}, fullPath: ${uploadResult.fullPath}`);
 
+    const userId = await getUserId();
+    if (userId == null) {
+        throw new Error('Failed to get user ID');
+    }
+    console.log(`userId: ${userId}`);
+
     // Invoke the Edge Function
     try {
         const response = await fetch('https://ebvqgkelaqaouhhhrrto.supabase.co/functions/v1/gemini-calorie-estimation', {
@@ -31,15 +49,15 @@ export async function handleMealSubmission(photoUri: string, name: string, descr
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${await getSessionJWT()}`
             },
-            body: JSON.stringify({ imagePath: uploadResult.path, name: name, description: description })
+            body: JSON.stringify({ imagePath: uploadResult.path, userId: userId, name: name, description: description })
         });
     
         const data = await response.json();
     
         console.log("Edge Function response received");
-
-        const parsedData = JSON.parse(data.text);
-        console.log(parsedData);
+        console.log(data);
+        
+        return data;
     } catch (error) {
         console.error('Error invoking Edge Function:', error);
         throw error;
