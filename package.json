@@ -25,7 +25,7 @@
     "@rneui/themed": "^4.0.0-rc.8",
     "@supabase/supabase-js": "^2.49.1",
     "base64-arraybuffer": "^1.0.2",
-    "caniuse-lite": "^1.0.30001707",
+    "caniuse-lite": "^1.0.30001717",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "expo": "^52.0.25",
