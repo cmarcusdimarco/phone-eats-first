@@ -2,6 +2,7 @@ import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useState, useRef } from 'react';
 import { Button } from '~/components/ui/button';
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { MaterialIcons, Feather } from "@expo/vector-icons";
 
 export default function Camera({ onCapture }: { onCapture: (uri: string | null) => void }) {
   const [facing, setFacing] = useState<CameraType>('back');
@@ -45,14 +46,18 @@ export default function Camera({ onCapture }: { onCapture: (uri: string | null) 
   }
 
     return (
-      <View style={styles.container}>
+      <View className="flex-1 justify-center mx-4 rounded-lg">
         <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-              <Text style={styles.text}>Flip Camera</Text>
+              <View style={styles.iconBackground}>
+                <MaterialIcons name="flip-camera-ios" size={32} color="white" />
+              </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={handleCapture}>
-              <Text style={styles.text}>Capture Image</Text>
+              <View style={styles.iconBackground}>
+                <Feather name="camera" size={32} color="white" />
+              </View>
             </TouchableOpacity>
           </View>
         </CameraView>
@@ -77,10 +82,20 @@ export default function Camera({ onCapture }: { onCapture: (uri: string | null) 
       flexDirection: 'row',
       backgroundColor: 'transparent',
       margin: 64,
+      gap: 32
     },
     button: {
       flex: 1,
       alignSelf: 'flex-end',
+      alignItems: 'center',
+      padding: 10,
+    },
+    iconBackground: {
+      backgroundColor: 'rgba(60, 60, 60, 0.5)',
+      borderRadius: 35,
+      width: 70,
+      height: 70,
+      justifyContent: 'center',
       alignItems: 'center',
     },
     text: {

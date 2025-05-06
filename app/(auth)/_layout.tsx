@@ -1,9 +1,8 @@
-import { Redirect, Stack } from "expo-router";
+import { Redirect, Tabs } from "expo-router";
 import { useEffect, useState } from "react";
-import { View, Text } from "react-native";
 import { supabase } from "~/lib/supabase";
 import { Session } from "@supabase/supabase-js";
-import { Button } from "~/components/ui/button";
+import { MaterialIcons, Feather } from "@expo/vector-icons";
 
 export default function AuthLayout() {
   const [session, setSession] = useState<Session | null>(null);
@@ -29,25 +28,41 @@ export default function AuthLayout() {
   }
 
   return (
-    <View className="flex-1">
-      <Stack>
-        <Stack.Screen
-          name="dashboard"
-          options={{
-            title: "Dashboard",
-            headerBackVisible: false,
-          }}
-        />
-        <Stack.Screen
-          name="add-meal"
-          options={{
-            title: "Add New Meal",
-          }}
-        />
-      </Stack>
-      <Button className="mx-4" onPress={() => supabase.auth.signOut()}>
-        <Text>Sign Out</Text>
-      </Button>
-    </View>
+    <Tabs
+      screenOptions={{
+        headerRight: () => (
+          <MaterialIcons
+            name="logout"
+            size={24}
+            color="black"
+            style={{ marginRight: 16 }}
+            onPress={() => supabase.auth.signOut()}
+          />
+        ),
+      }}
+    >
+      <Tabs.Screen
+        name="dashboard"
+        options={{
+          title: "Dashboard",
+          tabBarLabel: "Dashboard",
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="home" color={color} size={size} />
+          ),
+          tabBarHideOnKeyboard: true,
+        }}
+      />
+      <Tabs.Screen
+        name="add-meal"
+        options={{
+          title: "Add Meal",
+          tabBarLabel: "Add Meal",
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="plus-circle" color={color} size={size} />
+          ),
+          tabBarHideOnKeyboard: true,
+        }}
+      />
+    </Tabs>
   );
 }

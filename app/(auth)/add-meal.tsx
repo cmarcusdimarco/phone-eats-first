@@ -6,7 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { handleMealSubmission } from "~/services/mealsService";
 
 export default function AddMealScreen() {
-  const [showCamera, setShowCamera] = useState(false);
+  const [showCamera, setShowCamera] = useState(true);
   const [mealName, setMealName] = useState("");
   const [mealDescription, setMealDescription] = useState("");
   const [photoUri, setPhotoUri] = useState<string | null>(null);
