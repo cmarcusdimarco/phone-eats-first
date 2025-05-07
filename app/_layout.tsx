@@ -14,6 +14,7 @@ import { NAV_THEME } from "~/lib/constants";
 import { useColorScheme } from "~/lib/useColorScheme";
 import { PortalHost } from "@rn-primitives/portal";
 import { setAndroidNavigationBar } from "~/lib/android-navigation-bar";
+import { DashboardProvider } from "~/app/context/DashboardContext";
 
 const LIGHT_THEME: Theme = {
   ...DefaultTheme,
@@ -55,18 +56,22 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
       <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-      <Stack 
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen
-          name="index"
-          options={{
-            title: "Phone Eats First",
+      <DashboardProvider>
+        <Stack 
+          screenOptions={{
+            headerShown: false,
           }}
-        />
-      </Stack>
+        >
+          <Stack.Screen
+            name="index"
+            options={{
+              title: "Phone Eats First",
+            }}
+          />
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          <Stack.Screen name="(app)" options={{ headerShown: false }} />
+        </Stack>
+      </DashboardProvider>
       <PortalHost />
     </ThemeProvider>
   );

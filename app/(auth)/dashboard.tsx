@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { fetchMealsForDate, calculateTotalCalories, markCacheStale } from "~/services/mealsService";
 import { format } from "date-fns";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useDashboard } from "~/app/context/DashboardContext";
 
 interface Meal {
   meal_id: string;
@@ -19,6 +20,7 @@ interface Meal {
 }
 
 export default function DashboardScreen() {
+  const { isStale, markAsFresh } = useDashboard();
   const [meals, setMeals] = useState<Meal[]>([]);
   const [totalCalories, setTotalCalories] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(true);
@@ -38,6 +40,7 @@ export default function DashboardScreen() {
       console.log(`[Dashboard] Loaded ${mealsData.length} meals with ${calories} total calories`);
       setMeals(mealsData);
       setTotalCalories(calories);
+      markAsFresh();
     } catch (err) {
       console.error('[Dashboard] Error loading data:', err);
       setError(err instanceof Error ? err.message : 'Failed to load data');
@@ -45,6 +48,17 @@ export default function DashboardScreen() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (isStale) {
+      console.log('[Dashboard] Cache is stale, refreshing data...');
+      loadData();
+    }
+  }, [isStale]);
+
+  useEffect(() => {
+    loadData();
+  }, []);
 
   const handleClearCache = async () => {
     try {
@@ -57,10 +71,6 @@ export default function DashboardScreen() {
       setError(err instanceof Error ? err.message : 'Failed to clear cache');
     }
   };
-
-  useEffect(() => {
-    loadData();
-  }, []);
 
   if (isLoading) {
     return (

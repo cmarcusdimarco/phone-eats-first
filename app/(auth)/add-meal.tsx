@@ -6,8 +6,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { handleMealSubmission } from "~/services/mealsService";
 import { MaterialIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
+import { useDashboard } from "~/app/context/DashboardContext";
 
 export default function AddMealScreen() {
+  const { markAsStale } = useDashboard();
   const [showCamera, setShowCamera] = useState(true);
   const [mealName, setMealName] = useState("");
   const [mealDescription, setMealDescription] = useState("");
@@ -112,6 +114,8 @@ export default function AddMealScreen() {
               setMealResponse(response);
               setIsLoading(false);
               setShowProperties(true);
+              // Mark dashboard as stale when we get the response
+              markAsStale();
             }}
           >
             <Text>Do the AI thing</Text>
