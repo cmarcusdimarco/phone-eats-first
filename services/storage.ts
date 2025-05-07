@@ -1,4 +1,4 @@
-import { supabase } from '~/lib/supabase';
+import { supabase, getSessionJWT, getUserId } from '~/lib/supabase';
 import { Image } from 'react-native-compressor';
 import * as FileSystem from 'expo-file-system';
 import { decode } from 'base64-arraybuffer';
@@ -61,4 +61,22 @@ async function uriToArrayBuffer(uri: string): Promise<ArrayBuffer> {
     return decode(file);
 }
 
+export async function getImageUrl(uri: string): Promise<string | null> {
+    const { data, error } = await supabase.functions.invoke('create-signed-url', {
+        method: 'POST',
+        body: JSON.stringify({ assetId: uri, userId: await getUserId() }),
+        headers: {
+            'Authorization': `Bearer ${await getSessionJWT()}`
+        }
+      });
+    
+    if (error) {
+        console.error(`[Storage] Error creating signed URL: ${error.message}`);
+        return null;
+    }
+
+    const signedUrl = data.signedURL.signedUrl;
+
+    return signedUrl;
+}
 

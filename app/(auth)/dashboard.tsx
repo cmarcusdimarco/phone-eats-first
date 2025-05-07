@@ -1,12 +1,11 @@
-import { View, Text, ScrollView, ActivityIndicator, TouchableOpacity } from "react-native";
+import { View, Text, ScrollView, ActivityIndicator, TouchableOpacity, Image } from "react-native";
 import { Link } from "expo-router";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { useEffect, useState } from "react";
 import { fetchMealsForDate, calculateTotalCalories, markCacheStale } from "~/services/mealsService";
-import { format } from "date-fns";
-import { MaterialIcons } from "@expo/vector-icons";
 import { useDashboard } from "~/app/context/DashboardContext";
+import { MealCard } from "~/components/MealCard";
 
 interface Meal {
   meal_id: string;
@@ -17,6 +16,7 @@ interface Meal {
   calories: number;
   serving_size: string;
   servings_present: number;
+  uri: string;
 }
 
 export default function DashboardScreen() {
@@ -130,40 +130,10 @@ export default function DashboardScreen() {
               </Link>
             </View>
           ) : (
-            <View className="space-y-4">
-              {meals.map((meal) => {
-                let formattedTime = 'Unknown time';
-                try {
-                  if (meal.meal_created_at) {
-                    formattedTime = format(new Date(meal.meal_created_at), 'h:mm a');
-                  }
-                } catch (error) {
-                  console.error(`[Dashboard] Error formatting time for meal ${meal.meal_id}:`, error);
-                }
-
-                return (
-                  <View key={meal.meal_id} className="flex-row items-center justify-between p-4 bg-card rounded-lg border border-border">
-                    <View className="flex-1">
-                      <Text className="text-lg font-semibold">{meal.meal_name ?? meal.estimate_name ?? 'Unnamed Meal'}</Text>
-                      <Text className="text-muted-foreground">{meal.calories || 0} calories</Text>
-                      <Text className="text-sm text-muted-foreground">
-                        {formattedTime}
-                      </Text>
-                      {meal.description && (
-                        <Text className="text-sm text-muted-foreground mt-1">
-                          {meal.description}
-                        </Text>
-                      )}
-                    </View>
-                    <MaterialIcons name="chevron-right" size={24} color="#666" />
-                  </View>
-                );
-              })}
-              <Link href="/add-meal" asChild>
-                <Button className="mt-4">
-                  <Text>Add Another Meal</Text>
-                </Button>
-              </Link>
+            <View className="space-y-4 gap-2">
+              {meals.map((meal) => (
+                <MealCard key={meal.meal_id} meal={meal} />
+              ))}
             </View>
           )}
         </CardContent>

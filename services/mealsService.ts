@@ -1,30 +1,7 @@
 import { uploadFileAsync } from "./storage";
 import { supabase } from "~/lib/supabase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-// To get the current session JWT
-const getSessionJWT = async () => {
-  const { data: { session } } = await supabase.auth.getSession();
-  
-  if (session) {
-    const jwt = session.access_token;
-    return jwt;
-  }
-  
-  return null;
-};
-
-// To get the current user ID
-const getUserId = async () => {
-  const { data: { session } } = await supabase.auth.getSession();
-  
-  if (session) {
-    const userId = session.user.id;
-    return userId;
-  }
-  
-  return null;
-};
+import { getUserId, getSessionJWT } from "~/lib/supabase";
 
 // Cache keys
 const CACHE_KEY_PREFIX = 'meals_cache_';
@@ -100,6 +77,7 @@ export const fetchMealsForDate = async (date: string = getTodayDateString()) => 
       name,
       description,
       created_at,
+      uri,
       current_estimate_id
     `)
     .eq('user_id', userId)
@@ -156,6 +134,7 @@ export const fetchMealsForDate = async (date: string = getTodayDateString()) => 
     meal_name: meal.name,
     description: meal.description,
     meal_created_at: meal.created_at,
+    uri: meal.uri,
     ...(meal.current_estimate_id ? estimatesMap.get(meal.current_estimate_id) : {}),
     estimate_name: meal.current_estimate_id ? estimatesMap.get(meal.current_estimate_id)?.name : null
   }));

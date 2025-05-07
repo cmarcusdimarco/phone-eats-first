@@ -133,15 +133,15 @@ export default function AddMealScreen() {
               </DialogHeader>
               <DialogDescription className="flex-1 justify-between">
                 {isLoading ? (
-                  <View className="items-center py-4">
+                  <View className="flex-1 items-center justify-center w-full py-4">
                     <ActivityIndicator size="large" />
                     <Text className="mt-2">Processing your meal...</Text>
                   </View>
                 ) : mealResponse ? (
-                  <View className="flex-1 justify-between">
-                    <View className="items-center space-y-6">
-                      <Text className="text-xl font-semibold text-center">Meal logged!</Text>
-                      <View className="space-y-4">
+                  <View className="flex-1 justify-between w-full">
+                    <View className="flex-1 items-center gap-6 mt-4">
+                      <Text className="text-xl font-semibold">Meal logged!</Text>
+                      <View className="space-y-4 w-[80%]">
                         <Animated.View style={{ opacity: nameOpacity }}>
                           <Text className="text-lg">Name: {mealResponse.meal.name ?? mealResponse.estimate.name}</Text>
                         </Animated.View>

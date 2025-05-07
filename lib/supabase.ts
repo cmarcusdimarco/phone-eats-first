@@ -31,3 +31,27 @@ AppState.addEventListener("change", (state) => {
     supabase.auth.stopAutoRefresh();
   }
 });
+
+// To get the current session JWT
+export const getSessionJWT = async () => {
+  const { data: { session } } = await supabase.auth.getSession();
+  
+  if (session) {
+    const jwt = session.access_token;
+    return jwt;
+  }
+  
+  return null;
+};
+
+// To get the current user ID
+export const getUserId = async () => {
+  const { data: { session } } = await supabase.auth.getSession();
+  
+  if (session) {
+    const userId = session.user.id;
+    return userId;
+  }
+  
+  return null;
+};
